@@ -2,6 +2,7 @@
 
 using System;
 using Windows.Devices.Gpio;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -11,7 +12,7 @@ namespace Blinky
 {
     public sealed partial class MainPage : Page
     {
-        private const int LED_PIN = 5;
+        private const int LED_PIN = 47;
         private GpioPin pin;
         private GpioPinValue pinValue;
         private DispatcherTimer timer;
@@ -29,7 +30,7 @@ namespace Blinky
             if (pin != null)
             {
                 timer.Start();
-            }        
+            }
         }
 
         private void InitGPIO()
@@ -52,12 +53,6 @@ namespace Blinky
             GpioStatus.Text = "GPIO pin initialized correctly.";
 
         }
-
-   
-
-
-
-
         private void Timer_Tick(object sender, object e)
         {
             if (pinValue == GpioPinValue.High)
@@ -73,7 +68,20 @@ namespace Blinky
                 LED.Fill = grayBrush;
             }
         }
-             
 
+        private void LED_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
+        {
+            var msg = new MessageDialog("Du hast mich getouched!!", "Supertest");
+
+            if (timer.IsEnabled)
+            {
+                timer.Stop();
+            }
+            else
+            {
+                timer.Start();
+            }
+
+        }
     }
 }
